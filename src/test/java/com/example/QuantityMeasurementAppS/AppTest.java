@@ -2,55 +2,58 @@ package com.example.QuantityMeasurementAppS;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-class FeetServicesTest {
 
-    FeetServices service = new FeetServices();
+class QuantityMeasurementServiceTest {
+
+    // -------- FEET TESTS --------
 
     @Test
-    void testEquality_SameValue() {
-        FeetPOJO f1 = new FeetPOJO(1.0);
-        FeetPOJO f2 = new FeetPOJO(1.0);
-
-        assertTrue(service.areEqual(f1, f2),
-                "1.0 ft should be equal to 1.0 ft");
+    void testFeetEquality_SameValue() {
+        assertTrue(
+                FeetServices.areFeetEqual(1.0, 1.0));
     }
 
     @Test
-    void testEquality_DifferentValue() {
-        FeetPOJO f1 = new FeetPOJO(1.0);
-        FeetPOJO f2 = new FeetPOJO(2.0);
-
-        assertFalse(service.areEqual(f1, f2),
-                "1.0 ft should not equal 2.0 ft");
+    void testFeetEquality_DifferentValue() {
+        assertFalse(
+                QuantityMeasurementService.areFeetEqual(1.0, 2.0));
     }
 
     @Test
-    void testEquality_NullFirstValue() {
-        FeetPOJO f2 = new FeetPOJO(1.0);
-
-        assertFalse(service.areEqual(null, f2),
-                "Null should not be equal to any value");
+    void testFeetEquality_SameReference() {
+        FeetPOJO f = new FeetPOJO(5.0);
+        assertTrue(f.equals(f));
     }
 
     @Test
-    void testEquality_NullSecondValue() {
-        FeetPOJO f1 = new FeetPOJO(1.0);
-
-        assertFalse(service.areEqual(f1, null),
-                "Any value should not be equal to null");
+    void testFeetEquality_NullComparison() {
+        FeetPOJO f = new FeetPOJO(1.0);
+        assertFalse(f.equals(null));
     }
 
     @Test
-    void testEquality_BothNull() {
-        assertFalse(service.areEqual(null, null),
-                "Two null values should return false in service logic");
+    void testFeetEquality_NonNumericInput() {
+        FeetPOJO f = new FeetPOJO(1.0);
+        assertFalse(f.equals("invalid"));
+    }
+
+    // -------- INCH TESTS --------
+
+    @Test
+    void testInchEquality_SameValue() {
+        assertTrue(
+                FeetServices.areInchesEqual(2.0, 2.0));
     }
 
     @Test
-    void testEquality_SameReference() {
-        FeetPOJO f1 = new FeetPOJO(5.0);
+    void testInchEquality_DifferentValue() {
+        assertFalse(
+                FeetServices.areInchesEqual(2.0, 3.0));
+    }
 
-        assertTrue(service.areEqual(f1, f1),
-                "Object must be equal to itself");
+    @Test
+    void testInchEquality_NullComparison() {
+        InchesPOJO i = new InchesPOJO(2.0);
+        assertFalse(i.equals(null));
     }
 }
