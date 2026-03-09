@@ -4,36 +4,34 @@ public class App {
 
     public static void main(String[] args) {
 
-        QuantityLength a = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength b = new QuantityLength(12.0, LengthUnit.INCHES);
+        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength q2 = new QuantityLength(12.0, LengthUnit.INCHES);
 
-        System.out.println(a.add(b, LengthUnit.FEET));
-        System.out.println(a.add(b, LengthUnit.INCHES));
-        System.out.println(a.add(b, LengthUnit.YARDS));
+        System.out.println(q1.convertTo(LengthUnit.INCHES));
 
-        QuantityLength c = new QuantityLength(1.0, LengthUnit.YARDS);
-        QuantityLength d = new QuantityLength(3.0, LengthUnit.FEET);
+        System.out.println(q1.add(q2, LengthUnit.FEET));
 
-        System.out.println(c.add(d, LengthUnit.YARDS));
+        QuantityLength q3 = new QuantityLength(36.0, LengthUnit.INCHES);
+        QuantityLength q4 = new QuantityLength(1.0, LengthUnit.YARDS);
 
-        QuantityLength e = new QuantityLength(36.0, LengthUnit.INCHES);
-        QuantityLength f = new QuantityLength(1.0, LengthUnit.YARDS);
+        System.out.println(q3.equals(q4));
 
-        System.out.println(e.add(f, LengthUnit.FEET));
+        QuantityLength q5 = new QuantityLength(1.0, LengthUnit.YARDS);
+        QuantityLength q6 = new QuantityLength(3.0, LengthUnit.FEET);
 
-        QuantityLength g = new QuantityLength(2.54, LengthUnit.CENTIMETERS);
-        QuantityLength h = new QuantityLength(1.0, LengthUnit.INCHES);
+        System.out.println(q5.add(q6, LengthUnit.YARDS));
 
-        System.out.println(g.add(h, LengthUnit.CENTIMETERS));
+        QuantityLength q7 = new QuantityLength(2.54, LengthUnit.CENTIMETERS);
 
-        QuantityLength i = new QuantityLength(5.0, LengthUnit.FEET);
-        QuantityLength j = new QuantityLength(0.0, LengthUnit.INCHES);
+        System.out.println(q7.convertTo(LengthUnit.INCHES));
 
-        System.out.println(i.add(j, LengthUnit.YARDS));
+        QuantityLength q8 = new QuantityLength(5.0, LengthUnit.FEET);
+        QuantityLength q9 = new QuantityLength(0.0, LengthUnit.INCHES);
 
-        QuantityLength k = new QuantityLength(5.0, LengthUnit.FEET);
-        QuantityLength l = new QuantityLength(-2.0, LengthUnit.FEET);
+        System.out.println(q8.add(q9, LengthUnit.FEET));
 
-        System.out.println(k.add(l, LengthUnit.INCHES));
+        // Direct enum conversion
+        System.out.println(LengthUnit.FEET.convertToBaseUnit(12.0));
+        System.out.println(LengthUnit.INCHES.convertToBaseUnit(12.0));
     }
 }
