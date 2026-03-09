@@ -4,34 +4,110 @@ public class App {
 
     public static void main(String[] args) {
 
-        QuantityLength q1 = new QuantityLength(1.0, LengthUnit.FEET);
-        QuantityLength q2 = new QuantityLength(12.0, LengthUnit.INCHES);
+        System.out.println("----- SUBTRACTION -----");
 
-        System.out.println(q1.convertTo(LengthUnit.INCHES));
+        Quantity<LengthUnit> length1 = new Quantity<>(10.0, LengthUnit.FEET);
+        Quantity<LengthUnit> length2 = new Quantity<>(6.0, LengthUnit.INCHES);
 
-        System.out.println(q1.add(q2, LengthUnit.FEET));
+        System.out.println(length1.subtract(length2));
+        System.out.println(length1.subtract(length2, LengthUnit.INCHES));
 
-        QuantityLength q3 = new QuantityLength(36.0, LengthUnit.INCHES);
-        QuantityLength q4 = new QuantityLength(1.0, LengthUnit.YARDS);
+        Quantity<WeightUnit> weight1 = new Quantity<>(10.0, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> weight2 = new Quantity<>(5000.0, WeightUnit.GRAM);
 
-        System.out.println(q3.equals(q4));
+        System.out.println(weight1.subtract(weight2));
 
-        QuantityLength q5 = new QuantityLength(1.0, LengthUnit.YARDS);
-        QuantityLength q6 = new QuantityLength(3.0, LengthUnit.FEET);
+        Quantity<VolumeUnit> volume1 = new Quantity<>(5.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> volume2 = new Quantity<>(500.0, VolumeUnit.MILLILITRE);
 
-        System.out.println(q5.add(q6, LengthUnit.YARDS));
+        System.out.println(volume1.subtract(volume2));
 
-        QuantityLength q7 = new QuantityLength(2.54, LengthUnit.CENTIMETERS);
 
-        System.out.println(q7.convertTo(LengthUnit.INCHES));
+        System.out.println("\n----- DIVISION -----");
 
-        QuantityLength q8 = new QuantityLength(5.0, LengthUnit.FEET);
-        QuantityLength q9 = new QuantityLength(0.0, LengthUnit.INCHES);
+        System.out.println(new Quantity<>(10.0, LengthUnit.FEET)
+                .divide(new Quantity<>(2.0, LengthUnit.FEET)));
 
-        System.out.println(q8.add(q9, LengthUnit.FEET));
+        System.out.println(new Quantity<>(24.0, LengthUnit.INCHES)
+                .divide(new Quantity<>(2.0, LengthUnit.FEET)));
 
-        // Direct enum conversion
-        System.out.println(LengthUnit.FEET.convertToBaseUnit(12.0));
-        System.out.println(LengthUnit.INCHES.convertToBaseUnit(12.0));
+        System.out.println(new Quantity<>(10.0, WeightUnit.KILOGRAM)
+                .divide(new Quantity<>(5.0, WeightUnit.KILOGRAM)));
+
+        System.out.println(new Quantity<>(5.0, VolumeUnit.LITRE)
+                .divide(new Quantity<>(10.0, VolumeUnit.LITRE)));
+    }
+}
+
+
+/* -------- LENGTH -------- */
+
+enum LengthUnit implements IMeasurable {
+
+    FEET(1.0),
+    INCHES(1.0 / 12.0),
+    YARDS(3.0),
+    CENTIMETERS(1.0 / 30.48);
+
+    private final double conversionFactor;
+
+    LengthUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
+    }
+
+    public double getConversionFactor() {
+        return conversionFactor;
+    }
+
+    public String getUnitName() {
+        return name();
+    }
+}
+
+
+/* -------- WEIGHT -------- */
+
+enum WeightUnit implements IMeasurable {
+
+    KILOGRAM(1.0),
+    GRAM(0.001),
+    POUND(0.453592);
+
+    private final double conversionFactor;
+
+    WeightUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
+    }
+
+    public double getConversionFactor() {
+        return conversionFactor;
+    }
+
+    public String getUnitName() {
+        return name();
+    }
+}
+
+
+/* -------- VOLUME -------- */
+
+enum VolumeUnit implements IMeasurable {
+
+    LITRE(1.0),
+    MILLILITRE(0.001),
+    GALLON(3.78541);
+
+    private final double conversionFactor;
+
+    VolumeUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
+    }
+
+    public double getConversionFactor() {
+        return conversionFactor;
+    }
+
+    public String getUnitName() {
+        return name();
     }
 }
