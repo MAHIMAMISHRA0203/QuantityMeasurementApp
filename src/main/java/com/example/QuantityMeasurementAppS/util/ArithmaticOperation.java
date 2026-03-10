@@ -14,8 +14,8 @@ public enum ArithmaticOperation {
 
     private final DoubleBinaryOperator operation;
 
-    ArithmeticOperation(DoubleBinaryOperator operation){
-        this.operation=operation;
+    ArithmaticOperation(DoubleBinaryOperator operation){
+        this.operation = operation;
     }
 
     public double compute(double a,double b){
