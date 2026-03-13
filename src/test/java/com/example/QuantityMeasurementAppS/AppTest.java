@@ -1,59 +1,27 @@
 package com.example.QuantityMeasurementAppS;
 
+package com.quantity;
+
+import com.quantity.model.Quantity;
+import com.quantity.units.LengthUnit;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class QuantityMeasurementServiceTest {
-
-    // -------- FEET TESTS --------
+public class AppTest {
 
     @Test
-    void testFeetEquality_SameValue() {
-        assertTrue(
-                FeetServices.areFeetEqual(1.0, 1.0));
-    }
+    void testAddition() {
 
-    @Test
-    void testFeetEquality_DifferentValue() {
-        assertFalse(
-                QuantityMeasurementService.areFeetEqual(1.0, 2.0));
-    }
+        Quantity<LengthUnit> q1 =
+                new Quantity<>(1, LengthUnit.FEET);
 
-    @Test
-    void testFeetEquality_SameReference() {
-        FeetPOJO f = new FeetPOJO(5.0);
-        assertTrue(f.equals(f));
-    }
+        Quantity<LengthUnit> q2 =
+                new Quantity<>(12, LengthUnit.INCHES);
 
-    @Test
-    void testFeetEquality_NullComparison() {
-        FeetPOJO f = new FeetPOJO(1.0);
-        assertFalse(f.equals(null));
-    }
+        Quantity<LengthUnit> result =
+                q1.add(q2, LengthUnit.FEET);
 
-    @Test
-    void testFeetEquality_NonNumericInput() {
-        FeetPOJO f = new FeetPOJO(1.0);
-        assertFalse(f.equals("invalid"));
-    }
-
-    // -------- INCH TESTS --------
-
-    @Test
-    void testInchEquality_SameValue() {
-        assertTrue(
-                FeetServices.areInchesEqual(2.0, 2.0));
-    }
-
-    @Test
-    void testInchEquality_DifferentValue() {
-        assertFalse(
-                FeetServices.areInchesEqual(2.0, 3.0));
-    }
-
-    @Test
-    void testInchEquality_NullComparison() {
-        InchesPOJO i = new InchesPOJO(2.0);
-        assertFalse(i.equals(null));
+        assertEquals("Quantity(2.0, FEET)", result.toString());
     }
 }
