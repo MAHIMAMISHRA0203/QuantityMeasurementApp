@@ -1,28 +1,40 @@
-package com.example.QuantityMeasurementAppS;
+  
+class Feet{
+	 public double getFeet() {
+		return value;
+	}
+	 public Feet(double value) {
+		this.value = value;
+	}
 
-import java.util.Scanner;
-
-/**
- * Hello world!
- */
-public class App {
-    public static void main(String[] args) {
-    	Scanner sc=new Scanner(System.in);
-    	System.out.println("Please enter value 1:");
-    	double value1=sc.nextDouble();
-    	System.out.println("Please enter value 2:");
-    	double value2=sc.nextDouble();
-    	FeetPOJO f1=new FeetPOJO(value1);
-    	FeetPOJO f2=new FeetPOJO(value2);
-
-
-        FeetServices service =
-                new FeetServices();
-
-        boolean result = service.areEqual(f1, f2);
-
-        System.out.println("Are equal? " + result);
-    	
+	 private final  double value;
+	 @Override
+	 public boolean equals(Object object) {
+		 if(this==object)
+			 return true;
+		 if(this==null)
+			 return false;
+		 if(this.getClass()!=object.getClass())
+                return false;
+		 Feet otherFeet=(Feet)object;
+		 return Double.compare(this.value, otherFeet.value)==0;
+		 
+	 }
+	
+	
+}
+public class App 
+{
+    public static void main( String[] args )
+    {
+    	Feet feet1=new Feet(1.0);
+    	Feet feet2=new Feet(3.0);
+    	if(feet1.equals(feet2))
+    		System.out.println("equal");
+    	else {
+			System.out.println("not equal");
+		}
+    		
     	
     }
 }
