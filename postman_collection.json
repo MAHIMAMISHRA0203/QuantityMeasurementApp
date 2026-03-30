@@ -1,0 +1,236 @@
+{
+  "info": {
+    "name": "Quantity Measurement App - OAuth2 + JWT Testing",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Complete testing collection for OAuth2 login and JWT-protected endpoints"
+  },
+  "item": [
+    {
+      "name": "1. Public Endpoints",
+      "item": [
+        {
+          "name": "Compare Measurements (Public)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value1\": 1,\n  \"unit1\": \"FEET\",\n  \"value2\": 12,\n  \"unit2\": \"INCH\",\n  \"measurementType\": \"LENGTH\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/measurements/compare",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "measurements", "compare"]
+            },
+            "description": "Test public endpoint - should work without authentication"
+          }
+        },
+        {
+          "name": "Compare Different Values",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value1\": 1,\n  \"unit1\": \"METER\",\n  \"value2\": 100,\n  \"unit2\": \"CENTIMETER\",\n  \"measurementType\": \"LENGTH\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/measurements/compare",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "measurements", "compare"]
+            },
+            "description": "Test with different values - should return equal: true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. OAuth2 Authentication",
+      "item": [
+        {
+          "name": "Start OAuth2 Login",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/oauth2/authorization/google",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["oauth2", "authorization", "google"]
+            },
+            "description": "Initiate OAuth2 login flow - will redirect to Google"
+          }
+        },
+        {
+          "name": "Check Login Success",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/auth/login-success",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["auth", "login-success"]
+            },
+            "description": "Check if login was successful and JWT token was generated"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. JWT Protected Endpoints",
+      "item": [
+        {
+          "name": "Get Current User Info",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "description": "Replace {{jwt_token}} with actual JWT from login response"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/users/me",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "users", "me"]
+            },
+            "description": "Get current user information - requires valid JWT token"
+          }
+        },
+        {
+          "name": "Get Measurement History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/measurements/history",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "measurements", "history"]
+            },
+            "description": "Get measurement operation history - requires authentication"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Error Testing",
+      "item": [
+        {
+          "name": "Access Protected Without Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/users/me",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "users", "me"]
+            },
+            "description": "Should return 401 Unauthorized"
+          }
+        },
+        {
+          "name": "Access Protected With Invalid Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer invalid.jwt.token"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/users/me",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "users", "me"]
+            },
+            "description": "Should return 401 Unauthorized"
+          }
+        },
+        {
+          "name": "Invalid Comparison Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value1\": \"invalid\",\n  \"unit1\": \"FEET\",\n  \"value2\": 12,\n  \"unit2\": \"INCH\",\n  \"measurementType\": \"LENGTH\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/measurements/compare",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["api", "measurements", "compare"]
+            },
+            "description": "Should return validation error"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token obtained from OAuth2 login"
+    },
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Extract JWT token from login success response",
+          "if (pm.request.url.path.includes('login-success')) {",
+          "    // This would be handled by setting environment variable",
+          "    // after manual OAuth2 flow completion",
+          "}"
+        ]
+      }
+    }
+  ]
+}</content>
+<parameter name="filePath">c:\Users\mishr\Downloads\quantity_measurement_app\quantity_measurement_app\postman_collection.json
