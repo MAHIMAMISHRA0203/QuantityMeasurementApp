@@ -97,7 +97,7 @@ src/main/java/com/example/quantity_measurement_app
 
 1️⃣ Clone the Repository
 
-git clone https://github.com/your-username/quantity-measurement-app.git
+git clone https://github.com/MAHIMAMISHRA0203/quantity-measurement-app.git
 
 cd quantity-measurement-app
 2️⃣ Build the Project
