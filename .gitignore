@@ -1,0 +1,27 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Build outputs
+**/target/
+**/build/
+
+# Logs
+**/logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Env / secrets
+.env
+.env.*
+
+# Java
+hs_err_pid*
+replay_pid*

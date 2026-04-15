@@ -1,0 +1,93 @@
+﻿<section class="app-shell">
+  <div class="header-section">
+    <h2>{{ title }}</h2>
+    <div class="header-controls">
+      <button (click)="toggleDarkMode()" class="theme-toggle" [class.dark]="isDarkMode">
+        {{ isDarkMode ? 'Light' : 'Dark' }}
+      </button>
+      <div class="stats">
+        <span class="stat">{{ conversionCount }} operations</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip-banner" *ngIf="currentTip">
+    <span class="tip-text">{{ currentTip }}</span>
+  </div>
+
+  <div class="operations-grid">
+    <button *ngFor="let op of operations" (click)="changeOperation(op.key)" class="operation-btn"
+      [class.active]="selectedOperation === op.key">
+      {{ op.label }}
+    </button>
+  </div>
+
+  <div class="categories-grid">
+    <button *ngFor="let cat of categories" (click)="changeCategory(cat.key)" class="category-btn"
+      [class.active]="selectedCategory === cat.key">
+      <span class="category-icon">{{ cat.icon }}</span>
+      <span class="category-label">{{ cat.label }}</span>
+    </button>
+  </div>
+
+  <div class="grid">
+    <label>
+      Value 1
+      <input type="number" [(ngModel)]="value" [class.loading]="isLoading" />
+    </label>
+
+    <label>
+      Unit 1
+      <select [(ngModel)]="fromUnit" [disabled]="isLoading">
+        <option *ngFor="let unit of activeUnits" [value]="unit.key">{{ unit.label }}</option>
+      </select>
+    </label>
+
+    <label *ngIf="requiresSecondValue">
+      Value 2
+      <input type="number" [(ngModel)]="secondValue" [class.loading]="isLoading" />
+    </label>
+
+    <label>
+      {{ selectedOperation === 'CONVERT' ? 'To Unit' : 'Unit 2' }}
+      <select [(ngModel)]="toUnit" [disabled]="isLoading">
+        <option *ngFor="let unit of activeUnits" [value]="unit.key">{{ unit.label }}</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="button-row">
+    <button (click)="executeOperation()" class="primary" [disabled]="isLoading">
+      <span *ngIf="isLoading" class="spinner">Loading...</span>
+      <span *ngIf="!isLoading">{{ operationButtonLabel() }}</span>
+    </button>
+    <button (click)="swapUnits()" type="button" [disabled]="isLoading">
+      Swap Units
+    </button>
+  </div>
+
+  <div class="result" *ngIf="resultText" [@resultAnimation]>
+    <div class="result-header">
+      <strong>Result</strong>
+    </div>
+    <div class="result-content">
+      <span class="output-value">{{ resultText }}</span>
+    </div>
+  </div>
+
+  <div class="message" *ngIf="message" [class.error]="!resultText" [class.success]="!!resultText">
+    {{ message }}
+  </div>
+
+  <div class="favorites" *ngIf="favoriteConversions.length > 0">
+    <div class="favorites-header">
+      <h3>Recent Favorites</h3>
+      <button (click)="clearFavorites()" class="clear-favorites">Clear</button>
+    </div>
+    <ul class="favorites-list">
+      <li *ngFor="let fav of favoriteConversions" class="favorite-item">
+        {{ fav }}
+      </li>
+    </ul>
+  </div>
+</section>
