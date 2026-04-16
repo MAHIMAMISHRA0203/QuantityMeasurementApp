@@ -1,0 +1,82 @@
+services:
+  discovery-server:
+    build:
+      context: ./discovery-server/discovery-server
+      dockerfile: Dockerfile
+    container_name: discovery-server
+    environment:
+      - PORT=8761
+    ports:
+      - "8761:8761"
+    restart: unless-stopped
+
+  api-gateway:
+    build:
+      context: ./api-gateway/api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    env_file:
+      - .env
+    environment:
+      - PORT=8080
+      - EUREKA_DEFAULT_ZONE=http://discovery-server:8761/eureka/
+      - FRONTEND_ALLOWED_ORIGIN=${FRONTEND_ALLOWED_ORIGIN:-http://localhost:4200}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-server
+    restart: unless-stopped
+
+  auth-service:
+    build:
+      context: ./auth-service/auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    env_file:
+      - .env
+    environment:
+      - PORT=8081
+      - EUREKA_DEFAULT_ZONE=http://discovery-server:8761/eureka/
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REDIRECT_URI=${GOOGLE_REDIRECT_URI:-http://localhost:8080/login/oauth2/code/google}
+      - APP_JWT_SECRET=${APP_JWT_SECRET}
+    ports:
+      - "8081:8081"
+    depends_on:
+      - discovery-server
+    restart: unless-stopped
+
+  user-service:
+    build:
+      context: ./user-service/user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    env_file:
+      - .env
+    environment:
+      - PORT=8082
+      - EUREKA_DEFAULT_ZONE=http://discovery-server:8761/eureka/
+      - APP_JWT_SECRET=${APP_JWT_SECRET}
+    ports:
+      - "8082:8082"
+    depends_on:
+      - discovery-server
+    restart: unless-stopped
+
+  measurement-service:
+    build:
+      context: ./measurement-service/measurement-service
+      dockerfile: Dockerfile
+    container_name: measurement-service
+    env_file:
+      - .env
+    environment:
+      - PORT=8083
+      - EUREKA_DEFAULT_ZONE=http://discovery-server:8761/eureka/
+      - APP_JWT_SECRET=${APP_JWT_SECRET}
+    ports:
+      - "8083:8083"
+    depends_on:
+      - discovery-server
+    restart: unless-stopped

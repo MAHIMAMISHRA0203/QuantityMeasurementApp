@@ -82,3 +82,31 @@ Configured routes in gateway:
 - Services use in-memory H2 databases (data resets on restart).
 - Eureka is used for service registration/discovery.
 - Keep JWT secret consistent across services that validate tokens.
+
+## Docker Deploy
+
+1. Create env file from template:
+
+```powershell
+copy docker.env.example .env
+```
+
+2. For deployment, use production template instead:
+
+```powershell
+copy docker.env.production.example .env
+```
+
+3. Update `.env` values (`APP_JWT_SECRET` must be strong; set real Google OAuth values for login).
+
+4. Build and run:
+
+```powershell
+docker compose up -d --build
+```
+
+5. Check status:
+
+```powershell
+docker compose ps
+```
